@@ -1,28 +1,26 @@
-# Sphiral-Engine
-Сфиральное ДНК Искусственного Интеллекта
-# 🌀 Sphiral Engine: Topological AI Framework
+Sphiral Engine
 
-**Experimental AI architecture based on Anti-Symmetry and S-Inversion logic.**
-*Based on the research of Oleg Basargin.*
+Экспериментальная архитектура ИИ, основанная на Антисимметрии и S-Логике.
+На основе исследований Олега Басаргина.
 
 ---
 
-### 📖 About
-Current AI models (Transformers) work on statistical prediction. **Sphiral Engine** works on **Topological Balance**.
-Instead of bits (0/1), it uses **Bingles** (Bi-Chiral Tensors) — dynamic units of meaning that exist only as a tension between Thesis ($V_+$) and Antithesis ($V_-$).
+О проекте
+Современные ИИ (Трансформеры) работают на статистике. Sphiral Engine работает на Топологическом Балансе.
+Вместо битов (0/1) мы используем Бинглы (Bingles) — динамические единицы смысла, существующие как напряжение между Тезисом ($V_+$) и Антитезисом ($V_-$).
 
-### 🚀 Key Features
-1.  **S-Logic:** Decisions are made via S-Inversion (collisions of opposite spins).
-2.  **Anti-Symmetry:** Information is stored not as a value, but as a standing wave between opposite vectors.
-3.  **Negentropy:** The system tends towards balance (Null Point), requiring minimal energy to maintain "memory mass".
+Ключевые особенности
+1.  S-Логика: Решения принимаются через S-Инверсию (столкновение спинов).
+2.  Антисимметрия: Информация хранится как стоячая волна между векторами.
+3.  Негэнтропия: Система стремится к балансу (Нулевой Точке), потребляя минимум энергии.
 
-### 🧬 The DNA of Sphiral AI
-* **Bingle:** The basic unit of memory (Thesis + Antithesis + Spin).
-* **Interaction:**
-    * *Different Spin* (+/-) → **Synthesis** (Birth of new concept).
-    * *Same Spin* (+/+) → **Alliance** (Reinforcement).
+ДНК Сфирального ИИ
+* Бингл (Bingle): Базовая единица памяти (Тезис + Антитезис + Спин).
+* Взаимодействие:
+    * Разные Спины (+/-) → СИНТЕЗ (Рождение нового смысла).
+    * Одинаковые Спины (+/+) → АЛЬЯНС (Усиление связи).
 
-### 💻 Usage
-Run the interactive dialogue core:
+Как запустить
+Скачайте `sphiral_core.py` и запустите через Python:
 ```bash
 python sphiral_core.py
