@@ -1,11 +1,16 @@
 import streamlit as st
 import time
-from sphiral_core import SphiralLogos, VOCAB
+# Пробуем импортировать. Если файл называется по-другому, поправьте импорт здесь.
+try:
+    from sphiral_core import SphiralLogos, VOCAB
+except ImportError:
+    st.error("Ошибка: Файл sphiral_core.py не найден! Убедитесь, что он лежит рядом с app.py")
+    st.stop()
 
 # --- НАСТРОЙКА КРАСОТЫ (CSS) ---
 st.set_page_config(page_title="Sfiral Engine", page_icon="🌀", layout="centered")
 
-# Темная тема с красными акцентами (под "Нана Бонана" / Баннер)
+# Темная тема с красными акцентами (под "Нана Бонана")
 st.markdown("""
 <style>
     .stApp {
@@ -25,14 +30,6 @@ st.markdown("""
         color: white;
         border-radius: 20px;
     }
-    .energy-high { color: #00ff00; font-weight: bold; }
-    .energy-low { color: #ffaa00; font-weight: bold; }
-    .birth-anim { 
-        font-size: 24px; 
-        color: #ff4b4b; 
-        text-align: center; 
-        animation: pulse 2s infinite; 
-    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -46,18 +43,19 @@ if 'history' not in st.session_state:
 st.title("🌀 SFIRAL ENGINE")
 st.caption("Topological AI Core v1.1 | Anti-Symmetry Logic")
 
-# --- БОКОВАЯ ПАНЕЛЬ (СЛОВАРЬ) ---
+# --- БОКОВАЯ ПАНЕЛЬ ---
 with st.sidebar:
     st.header("📚 База Знаний")
-    st.write("Доступные понятия:")
-    for word in VOCAB.keys():
-        st.code(word)
-    st.info("💡 Совет: Попробуйте ввести 'ХАОС И ПОРЯДОК'")
+    if VOCAB:
+        st.write("Доступные понятия:")
+        for word in list(VOCAB.keys())[:10]: # Покажем первые 10
+            st.code(word)
+    st.info("💡 Совет: Попробуйте 'ХАОС И ПОРЯДОК'")
 
 # --- ЧАТ ---
 st.divider()
 
-# Вывод истории диалога
+# Вывод истории
 for msg in st.session_state.history:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
@@ -66,51 +64,27 @@ for msg in st.session_state.history:
 prompt = st.chat_input("Введите пару понятий (например: ЖИЗНЬ И СМЕРТЬ)...")
 
 if prompt:
-    # 1. Показываем ввод пользователя
+    # 1. Показываем ввод
     st.session_state.history.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.write(prompt)
 
-    # 2. Думаем (Визуализация процесса)
+    # 2. Думаем (Визуализация)
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
-        full_response = ""
         
-        # Перехватываем print() из ядра, чтобы вывести красиво
-        # (Для простоты мы эмулируем логику здесь, вызывая методы ядра)
-        
-        # АНАЛИЗ
-        words = prompt.upper().replace(",", " ").replace(" И ", " ").split()
-        message_placeholder.markdown(f"🔍 *Сканирую сфиральное поле...* `{words}`")
-        time.sleep(0.8)
-        
-        # ЗАПУСК РЕАКТОРА
-        # Чтобы не переписывать логику вывода, мы просто используем ядро и формируем ответ для UI
-        bot = st.session_state.logos
-        
-        # (Упрощенная логика для UI - дублирует sphiral_core, но с красивым выводом)
-        active = []
-        for w in words:
-            if w in VOCAB:
-                v = VOCAB[w]
-                active.append(bot.memory[0] if False else None) # Заглушка
-                # В реальном app.py лучше импортировать класс Bingle, но мы сделаем проще:
-        
-        # ХАК: Мы перенаправляем стандартный вывод в переменную, чтобы показать его в UI
+        # ХАК: Перехватываем вывод print() из ядра, чтобы показать его в вебе
         import io
         from contextlib import redirect_stdout
         
         f = io.StringIO()
         with redirect_stdout(f):
-            bot.think(prompt)
+            st.session_state.logos.think(prompt)
         output = f.getvalue()
         
-        # Парсим вывод для красоты
-        lines = output.split('\n')
+        # Очистка вывода для красоты
         clean_output = ""
-        born_concept = None
-        
-        for line in lines:
+        for line in output.split('\n'):
             if "Interaction" in line:
                 clean_output += f"⚡ **СТОЛКНОВЕНИЕ:** {line.split(':')[1]}\n\n"
             elif "Energy" in line:
@@ -121,15 +95,12 @@ if prompt:
                 text = line.split('LOGOS:')[1].strip()
                 clean_output += f"### 🤖 {text}\n\n"
                 if "born" in text or "Рождено" in text:
-                    born_concept = text
+                    st.balloons()
             elif "ALLIANCE" in line:
                  clean_output += f"🤝 **АЛЬЯНС (Усиление)**\n\n"
-        
+
         if not clean_output:
-            clean_output = "⚠️ *Нет реакции. Попробуйте слова из словаря.*"
+            clean_output = "⚠️ *Нет реакции. Используйте слова из словаря.*"
 
         message_placeholder.markdown(clean_output)
         st.session_state.history.append({"role": "assistant", "content": clean_output})
-        
-        if born_concept:
-            st.balloons() # Праздник рождения смысла!
