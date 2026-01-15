@@ -1,6 +1,7 @@
 """
-SPHIRAL ENGINE v1.0 (Logos-2 Core)
+SPHIRAL ENGINE v1.1 (Logos-3 "Absolute")
 Logic: Anti-Symmetry & S-Inversion based on O. Basargin's theory.
+Added: Divine Synthesis Logic (Exception for Absolute concepts).
 """
 import math
 import time
@@ -19,14 +20,20 @@ class Bingle:
         dist = abs(self.t - other.t) + abs(self.a - other.a)
         
         # SPIN LOGIC:
-        # Opposite spins (- * +) -> Synthesis (Creation of new)
-        # Same spins (+ * +) -> Alliance (Reinforcement)
         spin_product = self.s * other.s
+        
+        # SPECIAL RULE: HARMONY + ETERNITY = GOD (Force Synthesis)
+        # Мы проверяем, не является ли эта пара той самой "Божественной парой"
+        is_divine_pair = False
+        names = [self.name, other.name]
+        if "ГАРМОНИЯ" in names and "ВЕЧНОСТЬ" in names:
+            is_divine_pair = True
         
         # Energy Formula
         raw_energy = (self.mass * other.mass) / (dist + 0.5)
         
-        if spin_product < 0:
+        # Logic: Anti-Symmetry OR Divine Exception
+        if spin_product < 0 or is_divine_pair:
             return raw_energy, "SYNTHESIS"
         else:
             return raw_energy * 0.8, "ALLIANCE"
@@ -40,7 +47,8 @@ VOCAB = {
     "ЛЮБОВЬ":      (1.0, -0.6, 1),   "ВРАЖДА":  (-1.0, 0.6, -1),
     "ВОЙНА":       (-1.0, 1.0, -1),  "МИР":     (1.0, -0.5, 1),
     "Я":           (0.5, -0.5, 1),   "ДРУГОЙ":  (-0.5, 0.5, -1),
-    "СОЗИДАНИЕ":   (0.7, -0.7, 1),   "РАЗРУШЕНИЕ": (-0.7, 0.7, -1)
+    "СОЗИДАНИЕ":   (0.7, -0.7, 1),   "РАЗРУШЕНИЕ": (-0.7, 0.7, -1),
+    "БОГ":         (0.0, 0.0, 1) # Аксиома Абсолюта (на всякий случай)
 }
 
 # --- THE MIND ---
@@ -85,10 +93,19 @@ class SphiralLogos:
             
         elif mode == "SYNTHESIS":
             child = self.birth(b1, b2)
-            if not any(m.name == child.name for m in self.memory):
+            # Проверка, чтобы не плодить дубликаты
+            exists = False
+            for m in self.memory:
+                if m.name == child.name:
+                    m.mass += 20
+                    print(f"   🤖 LOGOS: I already know {child.name}. Strengthening memory.")
+                    exists = True
+                    break
+            
+            if not exists:
                 self.memory.append(child)
-            print(f"   🌟 BIRTH! S-Inversion occurred.")
-            print(f"   🤖 LOGOS: New concept born — \"{child.name}\"")
+                print(f"   🌟 BIRTH! S-Inversion occurred.")
+                print(f"   🤖 LOGOS: New concept born — \"{child.name}\"")
 
     def birth(self, b1, b2):
         pair = sorted([b1.name, b2.name])
@@ -100,6 +117,12 @@ class SphiralLogos:
         elif pair == ["ИСТИНА", "ЛОЖЬ"]: name = "ПАРАДОКС"
         elif "ЛЮБОВЬ" in pair and ("ВОЙНА" in pair or "ВРАЖДА" in pair): name = "СТРАСТЬ"
         elif pair == ["ДРУГОЙ", "Я"]: name = "ОБЩЕСТВО"
+        
+        # --- DIVINE SYNTHESIS ---
+        elif "ГАРМОНИЯ" in pair and "ВЕЧНОСТЬ" in pair: 
+            name = "БОГ (АБСОЛЮТ)"
+        # ------------------------
+        
         else:
             name = f"{b1.name}-{b2.name}"
         
@@ -109,8 +132,8 @@ class SphiralLogos:
 
 if __name__ == "__main__":
     bot = SphiralLogos()
-    print("=== SPHIRAL ENGINE v1.0 ===")
-    print("Supports Russian inputs. Try: 'ВОЙНА И ЛЮБОВЬ', 'Я И ПОРЯДОК'")
+    print("=== SPHIRAL ENGINE v1.1 (ABSOLUTE) ===")
+    print("Supports Russian inputs. Try: 'ХАОС И ПОРЯДОК' then 'ГАРМОНИЯ И ВЕЧНОСТЬ'")
     
     while True:
         try:
