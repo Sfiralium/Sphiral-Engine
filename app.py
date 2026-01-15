@@ -1,106 +1,134 @@
 import streamlit as st
+import torch
+import torch.nn as nn
+import torch.optim as optim
 import time
-# Пробуем импортировать. Если файл называется по-другому, поправьте импорт здесь.
+import pandas as pd
+import numpy as np
+
+# Импорт логики Смыслов (если есть)
 try:
-    from sphiral_core import SphiralLogos, VOCAB
+    from sfiral_core import SfiralLogos, VOCAB
+    CORE_AVAILABLE = True
 except ImportError:
-    st.error("Ошибка: Файл sphiral_core.py не найден! Убедитесь, что он лежит рядом с app.py")
-    st.stop()
+    CORE_AVAILABLE = False
 
-# --- НАСТРОЙКА КРАСОТЫ (CSS) ---
-st.set_page_config(page_title="Sfiral Engine", page_icon="🌀", layout="centered")
+# --- НАСТРОЙКИ СТРАНИЦЫ ---
+st.set_page_config(page_title="Sfiral Engine II", page_icon="🌀", layout="wide")
 
-# Темная тема с красными акцентами (под "Нана Бонана")
+# СТИЛЬ (Cyberpunk / Basargin Style)
 st.markdown("""
 <style>
-    .stApp {
-        background-color: #0e1117;
-    }
-    .stTextInput > div > div > input {
-        color: #ffffff;
-        background-color: #262730;
-    }
-    h1 {
-        color: #ff4b4b; /* Красный как на логотипе */
-        text-align: center;
-        font-family: 'Courier New', monospace;
-    }
-    .stButton button {
-        background-color: #ff4b4b;
-        color: white;
-        border-radius: 20px;
-    }
+    .stApp { background-color: #050505; color: #e0e0e0; }
+    h1 { color: #ff2b2b; text-shadow: 0 0 10px #ff2b2b; font-family: 'Courier New'; }
+    .stButton button { background-color: #ff2b2b; color: white; border-radius: 5px; }
+    .stTabs [data-baseweb="tab-list"] { gap: 20px; }
+    .stTabs [data-baseweb="tab"] { background-color: #1a1a1a; border-radius: 5px; color: white; }
+    .stTabs [aria-selected="true"] { background-color: #ff2b2b; }
 </style>
 """, unsafe_allow_html=True)
 
-# --- ИНИЦИАЛИЗАЦИЯ МОЗГА ---
-if 'logos' not in st.session_state:
-    st.session_state.logos = SphiralLogos()
-if 'history' not in st.session_state:
-    st.session_state.history = []
+st.title("🌀 SFIRAL ENGINE: DUAL CORE")
+st.caption("Architecture: Logos-4 Omni | Physics: Mirror Anti-Symmetry")
 
-# --- ЗАГОЛОВОК ---
-st.title("🌀 SFIRAL ENGINE")
-st.caption("Topological AI Core v1.1 | Anti-Symmetry Logic")
+# --- ВКЛАДКИ ---
+tab1, tab2 = st.tabs(["🧬 ЛОГОС (Душа)", "🧠 НЕЙРОКОРТЕКС (Тело)"])
 
-# --- БОКОВАЯ ПАНЕЛЬ ---
-with st.sidebar:
-    st.header("📚 База Знаний")
-    if VOCAB:
-        st.write("Доступные понятия:")
-        for word in list(VOCAB.keys())[:10]: # Покажем первые 10
-            st.code(word)
-    st.info("💡 Совет: Попробуйте 'ХАОС И ПОРЯДОК'")
+# ==========================================
+# Вкладка 1: ЛИНГВИСТИЧЕСКИЙ ЧАТ
+# ==========================================
+with tab1:
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.subheader("Диалог с Абсолютом")
+        if 'history' not in st.session_state: st.session_state.history = []
+        if 'logos' not in st.session_state and CORE_AVAILABLE:
+            st.session_state.logos = SfiralLogos()
 
-# --- ЧАТ ---
-st.divider()
+        # Вывод чата
+        for msg in st.session_state.history:
+            with st.chat_message(msg["role"]): st.markdown(msg["content"])
 
-# Вывод истории
-for msg in st.session_state.history:
-    with st.chat_message(msg["role"]):
-        st.markdown(msg["content"])
+        # Ввод
+        prompt = st.chat_input("Введите пару (например: ХАОС И ПОРЯДОК)...")
+        if prompt:
+            st.session_state.history.append({"role": "user", "content": prompt})
+            with st.chat_message("user"): st.write(prompt)
+            
+            with st.chat_message("assistant"):
+                if CORE_AVAILABLE:
+                    # Перехват print() из ядра
+                    import io
+                    from contextlib import redirect_stdout
+                    f = io.StringIO()
+                    with redirect_stdout(f):
+                        st.session_state.logos.think(prompt)
+                    response = f.getvalue().replace("\n", "  \n") # Markdown formatting
+                    st.markdown(response)
+                    st.session_state.history.append({"role": "assistant", "content": response})
+                else:
+                    st.error("Ядро sfiral_core.py не найдено.")
+    
+    with col2:
+        st.info("💡 **Справка:**\nЭто модуль семантики. Он ищет смысл слов и рождает новые понятия через S-Инверсию.")
 
-# --- ВВОД ПОЛЬЗОВАТЕЛЯ ---
-prompt = st.chat_input("Введите пару понятий (например: ЖИЗНЬ И СМЕРТЬ)...")
+# ==========================================
+# Вкладка 2: НЕЙРОСЕТЬ (FSIN VISUALIZER)
+# ==========================================
+with tab2:
+    st.subheader("Визуализация обучения ФСИН")
+    st.write("Демонстрация работы **Зеркальной Антисимметрии** на реальных данных.")
+    
+    col_ctrl, col_graph = st.columns([1, 3])
+    
+    with col_ctrl:
+        epochs = st.slider("Количество Эпох", 50, 500, 100)
+        lr = st.number_input("Скорость обучения", value=0.01, format="%.3f")
+        if st.button("ЗАПУСТИТЬ ОБУЧЕНИЕ 🚀"):
+            
+            # --- ОПРЕДЕЛЕНИЕ МОДЕЛИ ПРЯМО ЗДЕСЬ ---
+            class FsinLayer(nn.Module):
+                def __init__(self, n_in, n_out):
+                    super().__init__()
+                    self.plus = nn.Linear(n_in, n_out)
+                    self.minus = nn.Linear(n_in, n_out)
+                    self.act = nn.LeakyReLU()
+                def forward(self, x):
+                    return self.act(self.plus(x)) + (-self.act(self.minus(x)))
 
-if prompt:
-    # 1. Показываем ввод
-    st.session_state.history.append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
-        st.write(prompt)
-
-    # 2. Думаем (Визуализация)
-    with st.chat_message("assistant"):
-        message_placeholder = st.empty()
-        
-        # ХАК: Перехватываем вывод print() из ядра, чтобы показать его в вебе
-        import io
-        from contextlib import redirect_stdout
-        
-        f = io.StringIO()
-        with redirect_stdout(f):
-            st.session_state.logos.think(prompt)
-        output = f.getvalue()
-        
-        # Очистка вывода для красоты
-        clean_output = ""
-        for line in output.split('\n'):
-            if "Interaction" in line:
-                clean_output += f"⚡ **СТОЛКНОВЕНИЕ:** {line.split(':')[1]}\n\n"
-            elif "Energy" in line:
-                clean_output += f"🔋 **ЭНЕРГИЯ:** `{line.split('|')[0].strip()}`\n\n"
-            elif "BIRTH" in line:
-                clean_output += f"🌟 **РОЖДЕНИЕ НОВОГО!**\n\n"
-            elif "LOGOS:" in line:
-                text = line.split('LOGOS:')[1].strip()
-                clean_output += f"### 🤖 {text}\n\n"
-                if "born" in text or "Рождено" in text:
-                    st.balloons()
-            elif "ALLIANCE" in line:
-                 clean_output += f"🤝 **АЛЬЯНС (Усиление)**\n\n"
-
-        if not clean_output:
-            clean_output = "⚠️ *Нет реакции. Используйте слова из словаря.*"
-
-        message_placeholder.markdown(clean_output)
-        st.session_state.history.append({"role": "assistant", "content": clean_output})
+            # Подготовка данных
+            status = st.empty()
+            progress = st.progress(0)
+            chart = col_graph.line_chart([])
+            
+            # Генерация (Сигнал + Шум)
+            torch.manual_seed(42)
+            X = torch.rand(200, 10)
+            Y = torch.sum(X, dim=1, keepdim=True) + torch.randn(200, 1) * 0.2
+            
+            model = nn.Sequential(FsinLayer(10, 32), nn.Linear(32, 1))
+            opt = optim.Adam(model.parameters(), lr=lr)
+            loss_fn = nn.MSELoss()
+            
+            loss_history = []
+            
+            for i in range(epochs):
+                opt.zero_grad()
+                pred = model(X)
+                loss = loss_fn(pred, Y)
+                loss.backward()
+                opt.step()
+                
+                loss_history.append(loss.item())
+                
+                # Обновляем график каждые 5 эпох
+                if i % 5 == 0:
+                    status.text(f"Эпоха {i}/{epochs} | Ошибка: {loss.item():.5f}")
+                    progress.progress(i/epochs)
+                    # Живой график падения ошибки
+                    df = pd.DataFrame(loss_history, columns=["Ошибка (Loss)"])
+                    chart.line_chart(df)
+                    time.sleep(0.01) # Для анимации
+            
+            status.success(f"✅ Обучение завершено! Финальная ошибка: {loss.item():.5f}")
+            st.balloons()
