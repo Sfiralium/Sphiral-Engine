@@ -6,9 +6,9 @@ import time
 import pandas as pd
 import numpy as np
 
-# Импорт логики Смыслов (если есть)
+# Импорт логики Смыслов — ТОЧНО из твоего файла sphiral_core.py
 try:
-    from sfiral_core import SfiralLogos, VOCAB
+    from sphiral_core import SphiralLogos, VOCAB
     CORE_AVAILABLE = True
 except ImportError:
     CORE_AVAILABLE = False
@@ -43,7 +43,7 @@ with tab1:
         st.subheader("Диалог с Абсолютом")
         if 'history' not in st.session_state: st.session_state.history = []
         if 'logos' not in st.session_state and CORE_AVAILABLE:
-            st.session_state.logos = SfiralLogos()
+            st.session_state.logos = SphiralLogos()  # ← ИСПРАВЛЕНО: правильное имя класса
 
         # Вывод чата
         for msg in st.session_state.history:
@@ -57,20 +57,17 @@ with tab1:
             
             with st.chat_message("assistant"):
                 if CORE_AVAILABLE:
-                    # Перехват print() из ядра
+                    # Перехват print() из sphiral_core.py
                     import io
                     from contextlib import redirect_stdout
                     f = io.StringIO()
                     with redirect_stdout(f):
                         st.session_state.logos.think(prompt)
-                    response = f.getvalue().replace("\n", "  \n") # Markdown formatting
+                    response = f.getvalue().replace("\n", "  \n")
                     st.markdown(response)
                     st.session_state.history.append({"role": "assistant", "content": response})
                 else:
-                    st.error("Ядро sfiral_core.py не найдено.")
-    
-    with col2:
-        st.info("💡 **Справка:**\nЭто модуль семантики. Он ищет смысл слов и рождает новые понятия через S-Инверсию.")
+                    st.markdown("Ядро LOGOS недоступно. Проверьте файл sphiral_core.py.")
 
 # ==========================================
 # Вкладка 2: НЕЙРОСЕТЬ (FSIN VISUALIZER)
