@@ -1,5 +1,6 @@
 # 🌀 SFIRAL ENGINE: DUAL CORE SYSTEM (LOGOS + FSIN)
 
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](LICENSE)
 ![Version](https://img.shields.io/badge/Version-1.0_Genesis-blue)
 ![License](https://img.shields.io/badge/License-MIT_Open_Source-green)
 ![Status](https://img.shields.io/badge/Status-Research_Prototype-purple)
