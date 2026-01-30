@@ -1,88 +1,89 @@
 import streamlit as st
-from PIL import Image
 
 # --- НАСТРОЙКИ ---
-st.set_page_config(page_title="Sfiralium Ecosystem", layout="wide", page_icon="🌀")
+st.set_page_config(page_title="Sfiralium Ecosystem", layout="wide", page_icon="💠")
 
-# CSS для красоты (Стиль Киберпанк)
+# --- СТИЛЬ (Cyberpunk UI) ---
 st.markdown("""
 <style>
-    .main-header {font-size: 3rem; color: #00CCFF; text-align: center; font-weight: bold;}
-    .sub-header {font-size: 1.5rem; color: #aaaaaa; text-align: center; margin-bottom: 2rem;}
+    .main-header {font-size: 3rem; color: #00CCFF; text-align: center; font-weight: bold; text-shadow: 0px 0px 10px #00CCFF;}
+    .sub-header {font-size: 1.2rem; color: #aaaaaa; text-align: center; margin-bottom: 2rem;}
     .card {
-        background-color: #1E1E1E;
-        padding: 20px;
-        border-radius: 10px;
-        border: 1px solid #333;
+        background-color: #161b22;
+        padding: 25px;
+        border-radius: 12px;
+        border: 1px solid #30363d;
         text-align: center;
-        transition: transform 0.2s;
+        height: 100%;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        transition: transform 0.2s, border-color 0.2s;
     }
-    .card:hover {transform: scale(1.02); border-color: #00CCFF;}
-    h3 {color: #ffffff;}
-    p {color: #cccccc;}
+    .card:hover {
+        transform: translateY(-5px); 
+        border-color: #00CCFF;
+        box-shadow: 0 0 15px rgba(0, 204, 255, 0.2);
+    }
+    h3 {color: #ffffff; margin-bottom: 5px;}
+    .tag {color: #00CCFF; font-size: 0.9rem; font-weight: bold; letter-spacing: 1px; margin-bottom: 15px; display: block;}
+    p {color: #8b949e; font-size: 0.95rem; line-height: 1.5;}
 </style>
 """, unsafe_allow_html=True)
 
 # --- ЗАГОЛОВОК ---
-st.markdown('<div class="main-header">🌀 SFIRALIUM</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-header">Architecture of Time & Intelligence</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header">💠 SFIRALIUM</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-header">ECOSYSTEM CONTROL CENTER<br>Architecture of Time & Intelligence</div>', unsafe_allow_html=True)
 
 st.markdown("---")
 
-# --- ОПИСАНИЕ ФИЛОСОФИИ ---
-c1, c2 = st.columns([2, 1])
+# --- СЕТКА ПРОЕКТОВ (2 ряда по 2 колонки) ---
+
+# === РЯД 1: ФУНДАМЕНТАЛЬНАЯ НАУКА ===
+c1, c2 = st.columns(2)
+
 with c1:
-    st.info("💡 **Наша миссия:** Мы создаем технологии, основанные на принципе *Зеркальной Антисимметрии Времени*. Наши алгоритмы не просто вычисляют — они устраняют энтропию.")
-    st.markdown("""
-    * **S-Logic:** Логика, побеждающая хаос.
-    * **FSIN:** Нейросети, работающие без обучения на гигабайтах данных.
-    * **Time-Genetics:** Программирование материи через форму.
-    """)
-
-# --- КАРТОЧКИ ПРОЕКТОВ (ПОРТФОЛИО) ---
-st.header("🚀 Active Modules (Модули)")
-
-col1, col2, col3 = st.columns(3)
-
-# 1. HARDWARE (GYRO)
-with col1:
     st.markdown("""
     <div class="card">
-        <h3>🛸 Sfiral Gyro</h3>
-        <p><b>Hardware / Physics</b></p>
-        <p>Оптический гироскоп с фазовой антисимметрией. Побеждает дрейф и шум.</p>
-        <p><i>Status: Prototype Verified</i></p>
-    </div>
-    """, unsafe_allow_html=True)
-    st.link_button("👉 ЗАПУСТИТЬ ТЕСТ ДРОНА", "https://sfiral-gyro-92q6d8vzqc6nkwwo84zgps.streamlit.app/")
-
-# 2. SOFTWARE (BIO)
-with col2:
-    st.markdown("""
-    <div class="card">
+        <span class="tag">BIO-INFORMATICS</span>
         <h3>🧬 Protein Sfiral</h3>
-        <p><b>Bio-Informatics</b></p>
-        <p>Модуль фолдинга белков. Мгновенное предсказание 3D-структуры.</p>
-        <p><i>Status: Working Beta</i></p>
+        <p>Модуль сворачивания белков. Геометрический поиск нативной структуры без обучения на Big Data.</p>
     </div>
     """, unsafe_allow_html=True)
-    st.link_button("👉 СВЕРНУТЬ БЕЛОК", "https://protein-sfiral-tvflgztq3odxduv9ijeruw.streamlit.app/")
+    st.link_button("👉 ЗАПУСТИТЬ ЛАБОРАТОРИЮ", "https://protein-sfiral-tvflgztq3odxduv9ijeruw.streamlit.app/", use_container_width=True)
 
-# 3. CORE (ENGINE)
-with col3:
+with c2:
     st.markdown("""
     <div class="card">
-        <h3>🧠 Sphiral Engine</h3>
-        <p><b>OS / Kernel</b></p>
-        <p>Операционная система реального времени на базе S-логики.</p>
-        <p><i>Status: In Development</i></p>
+        <span class="tag">HARDWARE / PHYSICS</span>
+        <h3>🛸 Sfiral Gyro</h3>
+        <p>Оптический гироскоп с фазовой антисимметрией (S-Gate). Абсолютная навигация без дрейфа нуля.</p>
     </div>
     """, unsafe_allow_html=True)
-    st.button("Вы находитесь здесь", disabled=True)
+    st.link_button("👉 ЗАПУСТИТЬ ТЕСТ ДРОНА", "https://sfiral-gyro-92q6d8vzqc6nkwwo84zgps.streamlit.app/", use_container_width=True)
+
+st.markdown("<br>", unsafe_allow_html=True) # Отступ
+
+# === РЯД 2: ВЫЧИСЛИТЕЛЬНОЕ ЯДРО ===
+c3, c4 = st.columns(2)
+
+with c3:
+    st.markdown("""
+    <div class="card">
+        <span class="tag">INTELLIGENCE CORE</span>
+        <h3>🧠 Dual Core System</h3>
+        <p><b>LOGOS + FSIN</b>. Гибридный движок: Лингвистическая S-Логика (смыслы) + Нейросеть (PyTorch).</p>
+    </div>
+    """, unsafe_allow_html=True)
+    st.link_button("👉 ЗАПУСТИТЬ ДВИЖОК", "https://sphiral-engine-lmwfc57zgfna2umvbyqh6u.streamlit.app/", use_container_width=True)
+
+with c4:
+    st.markdown("""
+    <div class="card">
+        <span class="tag">KERNEL / RTOS</span>
+        <h3>⏳ Time-OS</h3>
+        <p>Операционная система реального времени. Планировщик событий на основе энтропии (Event-Driven).</p>
+    </div>
+    """, unsafe_allow_html=True)
+    st.link_button("👉 ЗАПУСТИТЬ ЯДРО ВРЕМЕНИ", "https://sphiral-engine-hblqnts5xs2ptmfzbgqwmu.streamlit.app/", use_container_width=True)
 
 st.markdown("---")
-
-# --- КОНТАКТЫ И ПАТЕНТЫ ---
-st.subheader("📜 Patents & Research")
-st.text("Все технологии защищены лицензией CC BY-NC 4.0 и патентными заявками класса G01C.")
-st.caption("© 2026 O.S. Basargin / Sfiralium Lab.")
+st.caption("© 2026 Sfiralium Lab. All Systems Operational. | License: CC BY-NC 4.0")
