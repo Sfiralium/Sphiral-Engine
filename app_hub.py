@@ -51,7 +51,6 @@ st.markdown('<div class="main-header">💠 SFIRALIUM</div>', unsafe_allow_html=T
 st.markdown('<div class="sub-header">ECOSYSTEM CONTROL CENTER<br>Laboratory of Time-Genetics & S-Logic</div>', unsafe_allow_html=True)
 
 # --- 2. МАНИФЕСТ (ОБЩИЙ ЗАМЫСЛ) ---
-# Вернули блок "Зачем это надо"
 st.markdown("""
 <div class="manifesto-box">
     <div class="manifesto-title">🧬 Философия Проекта: Времягенетика</div>
@@ -80,7 +79,8 @@ with c1:
         Вместо нейросетей мы используем геометрию. Модуль находит нативную структуру белка, минимизируя "сопротивление времени".</p>
     </div>
     """, unsafe_allow_html=True)
-    st.link_button("👉 ОТКРЫТЬ ЛАБОРАТОРИЮ", "https://protein-sfiral-tvflgztq3odxduv9ijeruw.streamlit.app/", use_container_width=True)
+    # --- ОБНОВЛЕННАЯ ССЫЛКА ЗДЕСЬ ---
+    st.link_button("👉 ОТКРЫТЬ ЛАБОРАТОРИЮ", "https://protein-sfiral-8v6esekusccmyvtpsgd6en.streamlit.app/", use_container_width=True)
 
 with c2:
     st.markdown("""
